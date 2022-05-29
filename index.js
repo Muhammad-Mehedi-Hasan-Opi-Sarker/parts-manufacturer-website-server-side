@@ -70,7 +70,7 @@ async function run() {
       const products = await cursor.toArray();
       res.send(products);
     });
-
+//  customer review code 
     app.post('/review', async(req,res)=>{
       const review = req.body;
       const result = await reviewCollection.insertOne(review);
