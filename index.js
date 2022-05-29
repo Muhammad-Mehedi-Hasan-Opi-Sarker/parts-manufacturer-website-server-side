@@ -18,6 +18,7 @@ async function run() {
     const productCollection = client.db("parts_manufacturer").collection("products");
     const bookingCollection = client.db("parts_manufacturer").collection("booking");
     const updateCollection = client.db("parts_manufacturer").collection("update");
+    const reviewCollection = client.db("parts_manufacturer").collection("review");
 
     // for booking 
     app.get('/product', async (req, res) => {
@@ -36,6 +37,7 @@ async function run() {
     })
 
     // table for data 
+    // this code need 
     app.get('/booking', async (req, res) => {
       const customerEmail = req.query.customerEmail;
       const query = { customerEmail: customerEmail };
@@ -49,12 +51,31 @@ async function run() {
       res.send(result);
     })
 
+    app.get('/update',async(req,res)=>{
+      const phoneNumber =req.query.phoneNumber;
+      const query = {phoneNumber:phoneNumber};
+      const update = await updateCollection.find(query).toArray();
+      res.send(update);
+    })
+
     app.post('/update', async (req, res) => {
       const booking = req.body;
       const result = await updateCollection.insertOne(booking);
       res.send(result);
     })
 
+    app.get('/review', async (req, res) => {
+      const query = {};
+      const cursor = reviewCollection.find(query);
+      const products = await cursor.toArray();
+      res.send(products);
+    });
+
+    app.post('/review', async(req,res)=>{
+      const review = req.body;
+      const result = await reviewCollection.insertOne(review);
+      res.send(result);
+    })
     
 
     app.delete('/booking/:id',async(req,res)=>{
