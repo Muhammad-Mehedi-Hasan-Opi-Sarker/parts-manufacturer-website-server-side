@@ -19,6 +19,7 @@ async function run() {
     const bookingCollection = client.db("parts_manufacturer").collection("booking");
     const updateCollection = client.db("parts_manufacturer").collection("update");
     const reviewCollection = client.db("parts_manufacturer").collection("review");
+    const emailCollection = client.db("parts_manufacturer").collection("email");
 
     // for booking 
     app.get('/product', async (req, res) => {
@@ -77,9 +78,9 @@ async function run() {
       res.send(result);
     })
 
-
     app.delete('/booking/:id', async (req, res) => {
       const id = req.params.id;
+      console.log(id)
       const query = { _id: ObjectId(id) };
       const result = await bookingCollection.deleteOne(query);
       res.send(result);
