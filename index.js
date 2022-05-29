@@ -17,36 +17,52 @@ async function run() {
     await client.connect();
     const productCollection = client.db("parts_manufacturer").collection("products");
     const bookingCollection = client.db("parts_manufacturer").collection("booking");
+    const updateCollection = client.db("parts_manufacturer").collection("update");
 
     // for booking 
-    app.get('/product', async(req, res) => {
+    app.get('/product', async (req, res) => {
       const query = {};
       const cursor = productCollection.find(query);
       const products = await cursor.toArray();
       res.send(products);
     });
 
-
     // get for one item 
-    app.get('/product/:id', async(req,res)=>{
+    app.get('/product/:id', async (req, res) => {
       const id = req.params.id;
-      const query = {_id:ObjectId(id)};
+      const query = { _id: ObjectId(id) };
       const product = await productCollection.findOne(query);
       res.send(product);
     })
 
-    app.get('/booking', async(req,res)=>{
+    // table for data 
+    app.get('/booking', async (req, res) => {
       const customerEmail = req.query.customerEmail;
-      const query = {customerEmail: customerEmail};
+      const query = { customerEmail: customerEmail };
       const bookings = await bookingCollection.find(query).toArray();
       res.send(bookings);
     })
 
-    app.post('/booking', async(req,res)=>{
+    app.post('/booking', async (req, res) => {
       const booking = req.body;
       const result = await bookingCollection.insertOne(booking);
       res.send(result);
     })
+
+    app.post('/update', async (req, res) => {
+      const booking = req.body;
+      const result = await updateCollection.insertOne(booking);
+      res.send(result);
+    })
+
+    
+
+    app.delete('/booking/:id',async(req,res)=>{
+      const id = req.params.id;
+      const query ={_id: ObjectId(id)};
+      const result = await bookingCollection.deleteOne(query);
+      res.send(result);
+    });
 
   } finally {
 
