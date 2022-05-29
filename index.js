@@ -51,9 +51,9 @@ async function run() {
       res.send(result);
     })
 
-    app.get('/update',async(req,res)=>{
-      const phoneNumber =req.query.phoneNumber;
-      const query = {phoneNumber:phoneNumber};
+    app.get('/update', async (req, res) => {
+      const phoneNumber = req.query.phoneNumber;
+      const query = { phoneNumber: phoneNumber };
       const update = await updateCollection.find(query).toArray();
       res.send(update);
     })
@@ -63,24 +63,24 @@ async function run() {
       const result = await updateCollection.insertOne(booking);
       res.send(result);
     })
-
+    // get customer review 
     app.get('/review', async (req, res) => {
       const query = {};
       const cursor = reviewCollection.find(query);
       const products = await cursor.toArray();
       res.send(products);
     });
-//  customer review code 
-    app.post('/review', async(req,res)=>{
+    //  customer review code 
+    app.post('/review', async (req, res) => {
       const review = req.body;
       const result = await reviewCollection.insertOne(review);
       res.send(result);
     })
-    
 
-    app.delete('/booking/:id',async(req,res)=>{
+
+    app.delete('/booking/:id', async (req, res) => {
       const id = req.params.id;
-      const query ={_id: ObjectId(id)};
+      const query = { _id: ObjectId(id) };
       const result = await bookingCollection.deleteOne(query);
       res.send(result);
     });
